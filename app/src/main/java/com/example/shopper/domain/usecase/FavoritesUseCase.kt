@@ -1,5 +1,6 @@
 package com.example.shopper.domain.usecase
 
+import androidx.lifecycle.LiveData
 import com.example.shopper.data.model.ShopItem
 import com.example.shopper.domain.repository.ShopRepository
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,7 @@ class FavoritesUseCase @Inject constructor(
         repository.deleteFavoriteItem(shopItem)
     }
 
-    fun getFavorites(): Flow<List<ShopItem>> {
+    fun getFavorites(): LiveData<List<ShopItem>> {
         return repository.getFavoriteItems()
     }
 

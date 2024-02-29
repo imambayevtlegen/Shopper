@@ -1,5 +1,6 @@
 package com.example.shopper.domain.usecase
 
+import androidx.lifecycle.LiveData
 import com.example.shopper.data.model.CartItem2
 import com.example.shopper.domain.repository.ShopRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +19,7 @@ class CartUseCase @Inject constructor(
         repository.clearCart()
     }
 
-    fun getCartItems(): Flow<List<CartItem2>> {
+    fun getCartItems(): LiveData<List<CartItem2>> {
         return repository.getCartItems()
     }
 
