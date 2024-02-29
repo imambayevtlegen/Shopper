@@ -10,15 +10,15 @@ class ProductUseCase @Inject constructor(
     private val repository: ShopRepository
 ) {
 
-    suspend fun getAllProducts(): Resource<Shop>{
+    suspend fun getAllProducts(): Resource<Shop> {
         return repository.getAllProducts()
     }
 
-    suspend fun getAllCategories(): Resource<Category>{
+    suspend fun getAllCategories(): Resource<Category> {
         return repository.getAllCategories()
     }
 
-    suspend fun getCategoryProducts(category: String): Resource<Shop>{
+    suspend fun getCategoryProducts(category: String): Resource<Shop> {
         return repository.getCategoryProducts(category)
     }
 }

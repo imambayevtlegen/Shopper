@@ -1,6 +1,7 @@
 package com.example.shopper.data.repository
 
 
+import androidx.lifecycle.LiveData
 import com.example.shopper.data.model.*
 import com.example.shopper.data.repository.datasource.ShopLocalDataSource
 import com.example.shopper.data.repository.datasource.ShopRemoteDataSource
@@ -85,7 +86,7 @@ class ShopRepositoryImpl @Inject constructor(
         return localDataSource.addToCart(cartItem2)
     }
 
-    override fun getCartItems(): Flow<List<CartItem2>>{
+    override fun getCartItems(): LiveData<List<CartItem2>>{
         return localDataSource.getCartItems()
     }
 
@@ -105,7 +106,7 @@ class ShopRepositoryImpl @Inject constructor(
         return localDataSource.addToFavorites(shopItem)
     }
 
-    override fun getFavoriteItems(): Flow<List<ShopItem>>{
+    override fun getFavoriteItems(): LiveData<List<ShopItem>>{
         return localDataSource.getFavoriteItems()
     }
 

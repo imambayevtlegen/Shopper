@@ -114,16 +114,17 @@ dependencies {
     //Datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    //Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.4-beta")
-
     //Paging 3
     val paging_version = "3.2.1"
     implementation("androidx.paging:paging-runtime:$paging_version")
-//    implementation("androidx.paging:paging-compose:3.2.0-rc01")
 
     //Glider
-    val glider_version = "4.1"
+    val glider_version = "4.16.0"
     implementation("com.github.bumptech.glide:glide:$glider_version")
-    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:$glider_version")
+
+    implementation ("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.0") {
+        exclude (group = "org.jetbrains.org.objectweb.asm", module = "util")
+    }
+
 }

@@ -10,13 +10,13 @@ import javax.inject.Inject
 
 class CartViewModel @Inject constructor(
     private val cartUseCase: CartUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    val totalItems : MutableLiveData<Int> = MutableLiveData()
-    val totalItemsPrice : MutableLiveData<Double> = MutableLiveData()
+    val totalItems: MutableLiveData<Int> = MutableLiveData()
+    val totalItemsPrice: MutableLiveData<Double> = MutableLiveData()
 
     fun getCartItems() = liveData {
-        cartUseCase.getCartItems().collect{
+        cartUseCase.getCartItems().collect {
             emit(it)
             computeTotal(it)
         }
@@ -39,18 +39,28 @@ class CartViewModel @Inject constructor(
         cartUseCase.clearCart()
     }
 
-    fun increment(cartItem: CartItem2){
-        updateProductInCart(quantity = cartItem.quantity + 1, price = cartItem.price.toDouble() + cartItem.pricePerItem,cartItem)
+    fun increment(cartItem: CartItem2) {
+        updateProductInCart(
+            quantity = cartItem.quantity + 1,
+            price = cartItem.price.toDouble() + cartItem.pricePerItem,
+            cartItem
+        )
     }
 
-    fun decrement(cartItem: CartItem2){
-        if (cartItem.quantity > 1){
-            updateProductInCart(quantity = cartItem.quantity -1, price = cartItem.price.toDouble() - cartItem.pricePerItem,cartItem)
+    fun decrement(cartItem: CartItem2) {
+        if (cartItem.quantity > 1) {
+            updateProductInCart(
+                quantity = cartItem.quantity - 1,
+                price = cartItem.price.toDouble() - cartItem.pricePerItem,
+                cartItem
+            )
         }
     }
 
-    private fun updateProductInCart(quantity: Int, price: Double, cartItem: CartItem2) = viewModelScope.launch(IO){
-        val copy = cartItem.copy(price = Utils.formatPrice(price.toString()), quantity = quantity)
-        cartUseCase.updateCartItem(copy)
-    }
+    private fun updateProductInCart(quantity: Int, price: Double, cartItem: CartItem2) =
+        viewModelScope.launch(IO) {
+            val copy =
+                cartItem.copy(price = Utils.formatPrice(price.toString()), quantity = quantity)
+            cartUseCase.updateCartItem(copy)
+        }
 }

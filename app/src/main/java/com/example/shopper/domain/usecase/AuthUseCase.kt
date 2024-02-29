@@ -19,36 +19,67 @@ class AuthUseCase @Inject constructor(
 
     // TODO no flow
     // TODO use runcatching
-    fun loginUser(username: String, password: String): Flow<Resource<LoginResponse>> = flow {
-        emit(Resource.Loading())
-        try {
+    suspend fun loginUser(username: String, password: String): Resource<LoginResponse> {
+        return runCatching {
             val login = Login(username, password)
             val response = repository.loginUser(login)
-            Log.i("AuthUseCase", "I dey here, ${response.data?.token}")
-            emit(response)
-        } catch (e : HttpException){
-            Log.i("AuthUseCase", "${e.localizedMessage}")
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
-        } catch (e : IOException){
-            Log.i("AuthUseCase", "${e.localizedMessage}")
-            emit(Resource.Error("Couldn't reach server. Check your internet connection."))
-        }
+            Log.i("AuthUseCase", "${response.data?.token}")
+            response
+        }.fold(
+            onSuccess = { it },
+            onFailure = { e ->
+                when (e) {
+                    is HttpException -> {
+                        Log.i("AuthUseCase", "${e.localizedMessage}")
+                        Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+                    }
+
+                    is IOException -> {
+                        Log.i("AuthUseCase", "${e.localizedMessage}")
+                        Resource.Error("Couldn't reach server. Check your internet connection.")
+                    }
+                    else -> {
+                        Log.i("AuthUseCase", "${e.localizedMessage}")
+                        Resource.Error("An unexpected error occurred.")
+                    }
+                }
+            }
+        )
+
     }
 
-    fun registerUser(username: String, password: String): Flow<Resource<User>> = flow {
-        emit(Resource.Loading())
-        val user = User(email = "new email", id = 10, name = Name(firstname = "new firstname", lastname = "new lastname"), password = password, username = username, v = 1)
-        try {
+    suspend fun registerUser(username: String, password: String): Resource<User> {
+        return runCatching {
+            val user = User(
+                email = "new email",
+                id = 10,
+                name = Name(firstname = "new firstname", lastname = "new lastname"),
+                password = password,
+                username = username,
+                v = 1
+            )
             val response = repository.registerUser(user)
-            emit(response)
-        }   catch (e: HttpException){
-            Log.i("AuthUseCase", "${e.localizedMessage}")
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
-        }
-        catch (e : IOException){
-            Log.i("AuthUseCase", "${e.localizedMessage}")
-            emit(Resource.Error("Couldn't reach server. Check your internet connection."))
-        }
-    }
+            response
+        }.fold(
+            onSuccess = { it },
+            onFailure = { e ->
+                when (e) {
+                    is HttpException -> {
+                        Log.i("AuthUseCase", "${e.localizedMessage}")
+                        Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+                    }
 
+                    is IOException -> {
+                        Log.i("AuthUseCase", "${e.localizedMessage}")
+                        Resource.Error("Couldn't reach the server. Check your internet connection")
+                    }
+
+                    else -> {
+                        Log.i("AuthUseCase", "${e.localizedMessage}")
+                        Resource.Error("An unexpected error occurred")
+                    }
+                }
+            }
+        )
+    }
 }

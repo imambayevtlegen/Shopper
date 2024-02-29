@@ -33,35 +33,35 @@ class EditProfileFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentEditProfileBinding.bind(view)
         user = EditProfileFragmentArgs.fromBundle(requireArguments()).user
 
-        binding.editProfileFirstName.setText(user.name.firstname)
-        binding.editProfileLastName.setText(user.name.lastname)
-        binding.editProfileEmailAddress.setText(user.email)
-        binding.editProfileUsername.setText(user.username)
+        editProfileFirstName.setText(user.name.firstname)
+        editProfileLastName.setText(user.name.lastname)
+        editProfileEmailAddress.setText(user.email)
+        editProfileUsername.setText(user.username)
 
-        binding.editProfileBack.setOnClickListener {
+        editProfileBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        binding.editProfileButton.setOnClickListener {
+        editProfileButton.setOnClickListener {
             viewModel.updateUser(1, user.copy(
                 id = 10,
-                username = "${binding.editProfileUsername.editableText ?: "new username"}"))
+                username = "${editProfileUsername.editableText ?: "new username"}"))
             viewModel.theUser.observe(viewLifecycleOwner){ result ->
                 when(result){
                     is Resource.Loading -> {
-                        binding.editProfileProgress.visibility = View.VISIBLE
-                        binding.editProfileButton.isEnabled = true
+                        editProfileProgress.visibility = View.VISIBLE
+                        editProfileButton.isEnabled = true
                         Log.i("EditProfileFragment", "Loading..")
                     }
                     is Resource.Success -> {
-                        binding.editProfileProgress.visibility = View.VISIBLE
-                        binding.editProfileButton.isEnabled = true
+                        editProfileProgress.visibility = View.VISIBLE
+                        editProfileButton.isEnabled = true
                         Log.i("EditProfileFragment", "${result.data}")
                         MaterialAlertDialogBuilder(requireContext())
                             .setTitle("Updated successfully")
@@ -72,9 +72,9 @@ class EditProfileFragment: Fragment() {
                             }.show()
                     }
                     is Resource.Error -> {
-                        binding.editProfileProgress.visibility = View.INVISIBLE
-                        binding.editProfileButton.isEnabled = true
-                        Snackbar.make(binding.editProfileButton, "Error ${result.message}", Snackbar.LENGTH_SHORT).show()
+                        editProfileProgress.visibility = View.INVISIBLE
+                        editProfileButton.isEnabled = true
+                        Snackbar.make(editProfileButton, "Error ${result.message}", Snackbar.LENGTH_SHORT).show()
                         Log.i("EditProfileFragment", "Error ${result.message}")
                     }
                 }

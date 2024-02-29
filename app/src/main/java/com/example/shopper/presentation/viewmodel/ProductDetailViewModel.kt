@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ProductDetailViewModel @Inject constructor(
     private val cartUseCase: CartUseCase,
     private val favoritesUseCase: FavoritesUseCase
-): ViewModel() {
+) : ViewModel() {
 
     fun saveToCart(cartItem2: CartItem2) = viewModelScope.launch(IO) {
         cartUseCase.addToCartItem(cartItem2)

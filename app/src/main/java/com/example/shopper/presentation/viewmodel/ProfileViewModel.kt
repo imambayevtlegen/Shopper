@@ -20,12 +20,17 @@ class ProfileViewModel @Inject constructor(
 
     fun getUser(id: Int) = viewModelScope.launch(IO) {
         user.postValue(Resource.Loading())
-        try {
-            val apiResult = profileUseCase.getUser(id)
-            user.postValue(apiResult)
-        } catch (e: Exception){
-            user.postValue(Resource.Error(message = e.localizedMessage ?: "Unknown error"))
+        val result = runCatching {
+            profileUseCase.getUser(id)
         }
+        result.fold(
+            onSuccess = { apiResult ->
+                user.postValue(apiResult)
+            },
+            onFailure = { e ->
+                user.postValue(Resource.Error(message = e.localizedMessage ?: "Unknown error"))
+            }
+        )
     }
 
     fun logoutUser() = viewModelScope.launch {

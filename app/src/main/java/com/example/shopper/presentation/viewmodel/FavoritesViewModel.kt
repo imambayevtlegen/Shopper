@@ -12,10 +12,10 @@ import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
     private val favoritesUseCase: FavoritesUseCase
-): ViewModel() {
+) : ViewModel() {
 
     fun getFavorites() = liveData {
-        favoritesUseCase.getFavorites().collect{
+        favoritesUseCase.getFavorites().collect {
             emit(it)
         }
     }

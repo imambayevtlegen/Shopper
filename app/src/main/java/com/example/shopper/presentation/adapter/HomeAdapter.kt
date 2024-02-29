@@ -31,17 +31,17 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     inner class HomeViewHolder(private val binding: SingleItemBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bindData(shopItem: ShopItem){
-            Glide.with(binding.itemImage)
+        fun bindData(shopItem: ShopItem) = with(binding){
+            Glide.with(itemImage.context)
                 .load(shopItem.image)
-                .into(binding.itemImage)
+                .into(itemImage)
 
-            binding.itemTitle.text = shopItem.title
-            binding.itemPrice.text = "KZT ${shopItem.price}"
-            binding.itemRating.text = "${shopItem.rating.rate}"
-            binding.itemReview.text = "${shopItem.rating.count} Reviews"
+            itemTitle.text = shopItem.title
+            itemPrice.text = "KZT ${shopItem.price}"
+            itemRating.text = "${shopItem.rating.rate}"
+            itemReview.text = "${shopItem.rating.count} Reviews"
 
-            binding.itemView.setOnClickListener{
+            itemView.setOnClickListener{
                 onItemClickListener(shopItem)
             }
         }

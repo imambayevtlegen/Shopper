@@ -2,7 +2,6 @@ package com.example.shopper.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -51,22 +50,22 @@ class CartAdapter: ListAdapter<CartItem2, CartAdapter.CartViewHolder>(DiffUtilIt
         fun bindData(cartItem: CartItem2) = with(binding){
 
             cartItemName.text = cartItem.title
-            binding.cartItemPrice.text = "KZT ${Utils.formatPrice(cartItem.price)}"
-            binding.cartItemQuantity.text = "${cartItem.quantity}"
+            cartItemPrice.text = "KZT ${Utils.formatPrice(cartItem.price)}"
+            cartItemQuantity.text = "${cartItem.quantity}"
 
-            Glide.with(binding.cartItemImage)
+            Glide.with(cartItemImage.context)
                 .load(cartItem.image)
-                .into(binding.cartItemImage)
+                .into(cartItemImage)
 
-            binding.cartItemDelete.setOnClickListener {
+            cartItemDelete.setOnClickListener {
                 removeListener(cartItem)
             }
 
-            binding.cartItemPlus.setOnClickListener {
+            cartItemPlus.setOnClickListener {
                 incrementListener(cartItem)
             }
 
-            binding.cartItemMinus.setOnClickListener {
+            cartItemMinus.setOnClickListener {
                 decrementListener(cartItem)
             }
         }
@@ -78,5 +77,7 @@ class CartAdapter: ListAdapter<CartItem2, CartAdapter.CartViewHolder>(DiffUtilIt
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
+        val cartItem = getItem(position)
     }
+
 }

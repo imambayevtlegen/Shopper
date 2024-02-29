@@ -18,11 +18,15 @@ class EditProfileViewModel @Inject constructor(
 
     fun updateUser(id: Int, user: User) = viewModelScope.launch(IO) {
         theUser.postValue(Resource.Loading())
-        try {
-            val apiResult = profileUseCase.updateUser(id, user)
-            theUser.postValue(apiResult)
-        } catch (e: Exception){
-            theUser.postValue(Resource.Error(message = e.localizedMessage ?: "Unknown error"))
-        }
+        val result = runCatching {
+            profileUseCase.updateUser(id, user)
+        }.fold(
+            onSuccess = { apiResult ->
+                theUser.postValue(apiResult)
+            },
+            onFailure = { e ->
+                theUser.postValue(Resource.Error(message = e.localizedMessage ?: "Unknown error"))
+            }
+        )
     }
 }

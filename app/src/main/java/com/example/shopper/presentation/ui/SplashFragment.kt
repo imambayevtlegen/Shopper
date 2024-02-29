@@ -2,6 +2,7 @@ package com.example.shopper.presentation.ui
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +30,12 @@ class SplashFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             if (viewModel.loggedIn){
-                findNavController().navigate()
+                findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+            } else{
+                findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
             }
-        })
+        }, 2000L)
     }
 }

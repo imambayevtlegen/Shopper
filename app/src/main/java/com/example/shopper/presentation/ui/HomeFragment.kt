@@ -36,7 +36,7 @@ class HomeFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentHomeBinding.bind(view)
@@ -52,15 +52,15 @@ class HomeFragment: Fragment() {
                     chip.id = 0
                     chip.isChecked = true
                     category2.clear()
-                    binding.chipGroup.removeAllViews()
+                    chipGroup.removeAllViews()
                     category2.add(Category2(0, "All"))
-                    binding.chipGroup.addView(chip)
+                    chipGroup.addView(chip)
                     categories?.forEachIndexed { index, category ->
                         val chip = Chip(requireContext())
                         chip.text = category
                         chip.id = index+1
                         category2.add(Category2(index, category))
-                        binding.chipGroup.addView(chip)
+                        chipGroup.addView(chip)
                     }
                 }
                 is Resource.Loading -> {
@@ -94,7 +94,7 @@ class HomeFragment: Fragment() {
             findNavController().navigate(action)
         }
 
-        binding.chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+        chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             group.isSingleSelection = true
             val chipid = group.checkedChipId
             val category = category2[chipid].category

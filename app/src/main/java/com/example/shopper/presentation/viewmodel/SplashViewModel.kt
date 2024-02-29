@@ -10,5 +10,6 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     sharedPreference: SharedPreference
 ) : ViewModel() {
-    val loggedIn : Boolean = sharedPreference.userIsLoggedIn()
+
+    val loggedIn: Boolean = sharedPreference.userIsLoggedIn()
 }

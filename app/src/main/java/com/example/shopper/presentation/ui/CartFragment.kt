@@ -12,13 +12,17 @@ import com.example.shopper.data.util.Utils
 import com.example.shopper.databinding.FragmentCartBinding
 import com.example.shopper.presentation.adapter.CartAdapter
 import com.example.shopper.presentation.viewmodel.CartViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class CartFragment: Fragment() {
+@AndroidEntryPoint
+class CartFragment : Fragment() {
 
     private lateinit var binding: FragmentCartBinding
+
     @Inject
     lateinit var cartViewModel: CartViewModel
+
     @Inject
     lateinit var cartAdapter: CartAdapter
 
@@ -30,44 +34,44 @@ class CartFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_cart, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentCartBinding.bind(view)
 
-        cartViewModel.getCartItems().observe(viewLifecycleOwner){
-            cartAdapter.differ.submitList(it)
+        cartViewModel.getCartItems().observe(viewLifecycleOwner) {newList ->
+            cartAdapter.submitList(newList)
         }
 
-        cartAdapter.setOnRemoveClickListener{
+        cartAdapter.setOnRemoveClickListener {
             cartViewModel.deleteCart(it)
         }
 
         cartAdapter.incrementClickListener {
-            Log.i("CartFragment", "I don't click the increment")
+            Log.i("CartFragment", "Increment")
             cartViewModel.increment(it)
         }
 
         cartAdapter.decrementClickListener {
-            Log.i("CartFragment", "I don't click the decrement")
+            Log.i("CartFragment", "Decrement")
             cartViewModel.decrement(it)
         }
 
-        cartViewModel.totalItems.observe(viewLifecycleOwner){
-            binding.cartItemsInfo.text = "Total $it Items"
+        cartViewModel.totalItems.observe(viewLifecycleOwner) {
+            cartItemsInfo.text = "Total $it Items"
         }
 
-        cartViewModel.totalItemsPrice.observe(viewLifecycleOwner){
-            binding.cartItemsPrice.text = "KZT ${Utils.formatPrice(it.toString())}"
+        cartViewModel.totalItemsPrice.observe(viewLifecycleOwner) {
+            cartItemsPrice.text = "KZT ${Utils.formatPrice(it.toString())}"
         }
 
-        binding.cartRecyclerView.adapter = cartAdapter
+        cartRecyclerView.adapter = cartAdapter
 
-        binding.cartBack.setOnClickListener {
+        cartBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        binding.cartClearAll.setOnClickListener {
+        cartClearAll.setOnClickListener {
             cartViewModel.clearCart()
         }
     }

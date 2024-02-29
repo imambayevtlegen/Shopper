@@ -1,5 +1,6 @@
 package com.example.shopper.data.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import com.example.shopper.data.model.CartItem2
@@ -20,7 +21,7 @@ interface ShopDAO {
     suspend fun deleteCart(cartItem2: CartItem2)
 
     @Query("select * from cart")
-    fun cartItems(): Flow<List<CartItem2>>
+    fun cartItems(): LiveData<List<CartItem2>>
 
     @Query("delete from cart")
     suspend fun clearAll()
@@ -29,7 +30,7 @@ interface ShopDAO {
     suspend fun addToFavorites(shopItem: ShopItem)
 
     @Query("select * from favorites")
-    fun favoriteItems(): Flow<List<ShopItem>>
+    fun getFavoriteItems(): LiveData<List<ShopItem>>
 
     @Delete
     suspend fun deleteFavorites(shopItem: ShopItem)

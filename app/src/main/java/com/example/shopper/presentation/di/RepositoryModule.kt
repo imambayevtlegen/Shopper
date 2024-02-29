@@ -16,7 +16,10 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun providesShopRepository(shopRemoteDataSource: ShopRemoteDataSource, localDataSource: ShopLocalDataSource): ShopRepository{
+    fun providesShopRepository(
+        shopRemoteDataSource: ShopRemoteDataSource,
+        localDataSource: ShopLocalDataSource
+    ): ShopRepository {
         return ShopRepositoryImpl(shopRemoteDataSource, localDataSource)
     }
 }

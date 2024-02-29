@@ -32,7 +32,7 @@ class ProfileFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentProfileBinding.bind(view)
@@ -46,8 +46,8 @@ class ProfileFragment: Fragment() {
                 }
                 is Resource.Success -> {
                     user = result.data
-                    binding.profileName.text = "${result.data?.name?.firstname} ${result.data?.name?.lastname}"
-                    binding.profileEmail.text = "${result.data?.email}"
+                    profileName.text = "${result.data?.name?.firstname} ${result.data?.name?.lastname}"
+                    profileEmail.text = "${result.data?.email}"
                 }
                 is Resource.Error -> {
                     Log.i("ProfileFragment", "Error ${result.message}")
@@ -55,38 +55,38 @@ class ProfileFragment: Fragment() {
             }
         }
 
-        binding.profileBack.setOnClickListener {
+        profileBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        binding.profileEdit.setOnClickListener {
+        profileEdit.setOnClickListener {
             val action = user?.let { user1 ->
                 ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment(user1)
             }
             if (action != null) findNavController().navigate(action)
         }
 
-        binding.profileNotifications.setOnClickListener {
-            Snackbar.make(binding.profileNotifications, "Coming soon..", Snackbar.LENGTH_SHORT).show()
+        profileNotifications.setOnClickListener {
+            Snackbar.make(profileNotifications, "Coming soon..", Snackbar.LENGTH_SHORT).show()
         }
 
-        binding.profileFavorites.setOnClickListener {
+        profileFavorites.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_favoritesFragment)
         }
 
-        binding.profileTerms.setOnClickListener {
-            Snackbar.make(binding.profileNotifications, "Coming soon..", Snackbar.LENGTH_SHORT).show()
+        profileTerms.setOnClickListener {
+            Snackbar.make(profileNotifications, "Coming soon..", Snackbar.LENGTH_SHORT).show()
         }
 
-        binding.profilePrivacy.setOnClickListener {
-            Snackbar.make(binding.profileNotifications, "Coming soon..", Snackbar.LENGTH_SHORT).show()
+        profilePrivacy.setOnClickListener {
+            Snackbar.make(profileNotifications, "Coming soon..", Snackbar.LENGTH_SHORT).show()
         }
 
-        binding.profileReportBug.setOnClickListener {
-            Snackbar.make(binding.profileNotifications,"Coming soon...",Snackbar.LENGTH_SHORT).show()
+        profileReportBug.setOnClickListener {
+            Snackbar.make(profileNotifications,"Coming soon...",Snackbar.LENGTH_SHORT).show()
         }
 
-        binding.profileLogout.setOnClickListener {
+        profileLogout.setOnClickListener {
             viewModel.logoutUser()
             findNavController().navigate(R.id.action_profileFragment_to_splashFragment)
         }

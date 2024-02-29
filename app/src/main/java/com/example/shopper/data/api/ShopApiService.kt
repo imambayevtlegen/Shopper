@@ -30,7 +30,7 @@ interface ShopApiService {
     suspend fun deleteProduct(@Path(value = "id")id: Int): Response<ShopItem>
 
     @GET("carts/user/{id}")
-    suspend fun getCart(@Path(value = "id")id: Int): Cart
+    suspend fun getCart(@Path(value = "id")id: Int): Response<Cart>
 
     @GET("carts/user/{id}")
     suspend fun getCartProducts(@Path(value = "id")id: Int): Response<CartItem>

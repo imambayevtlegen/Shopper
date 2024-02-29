@@ -1,5 +1,6 @@
 package com.example.shopper.data.repository.datasourceImpl
 
+import androidx.lifecycle.LiveData
 import com.example.shopper.data.db.ShopDAO
 import com.example.shopper.data.model.CartItem2
 import com.example.shopper.data.model.ShopItem
@@ -16,7 +17,7 @@ class ShopLocalDataSourceImpl @Inject constructor(
         return shopDAO.addToCart(cartItem2)
     }
 
-    override fun getCartItems(): Flow<List<CartItem2>> {
+    override fun getCartItems(): LiveData<List<CartItem2>> {
         return shopDAO.cartItems()
     }
 
@@ -36,8 +37,8 @@ class ShopLocalDataSourceImpl @Inject constructor(
         return shopDAO.addToFavorites(shopItem)
     }
 
-    override fun getFavoriteItems(): Flow<List<ShopItem>> {
-        return shopDAO.favoriteItems()
+    override fun getFavoriteItems(): LiveData<List<ShopItem>> {
+        return shopDAO.getFavoriteItems()
     }
 
     override suspend fun deleteFavoriteItem(shopItem: ShopItem) {

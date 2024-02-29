@@ -9,11 +9,11 @@ class ProfileUseCase @Inject constructor(
     private val repository: ShopRepository
 ) {
 
-    suspend fun getUser(id: Int): Resource<User>{
+    suspend fun getUser(id: Int): Resource<User> {
         return repository.getUser(id)
     }
 
-    suspend fun updateUser(id: Int, user: User): Resource<User>{
+    suspend fun updateUser(id: Int, user: User): Resource<User> {
         return repository.updateUser(id, user)
     }
 }

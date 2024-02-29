@@ -33,18 +33,18 @@ class SearchAdapter: RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
         private val binding: SearchItemBinding
     ): RecyclerView.ViewHolder(binding.root){
 
-        fun bindData(shopItem: ShopItem){
+        fun bindData(shopItem: ShopItem) = with(binding){
 
-            Glide.with(binding.searchItemImage)
+            Glide.with(searchItemImage.context)
                 .load(shopItem.image)
-                .into(binding.searchItemImage)
+                .into(searchItemImage)
 
-            binding.searchItemTitle.text = shopItem.title
-            binding.searchItemPrice.text = "KZT ${shopItem.price}"
-            binding.searchItemRating.text = "${shopItem.rating.rate}"
-            binding.searchItemReview.text = "${shopItem.rating.count} Reviews"
+            searchItemTitle.text = shopItem.title
+            searchItemPrice.text = "KZT ${shopItem.price}"
+            searchItemRating.text = "${shopItem.rating.rate}"
+            searchItemReview.text = "${shopItem.rating.count} Reviews"
 
-            binding.searchItemView.setOnClickListener {
+            searchItemView.setOnClickListener {
                 onItemClickListener(shopItem)
             }
         }

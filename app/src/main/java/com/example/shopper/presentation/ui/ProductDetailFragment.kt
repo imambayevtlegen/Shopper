@@ -41,53 +41,53 @@ class ProductDetailFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_product_detail, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentProductDetailBinding.bind(view)
 
         updateViews()
 
-        binding.productDetailBack.setOnClickListener {
+        productDetailBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        binding.productDetailAddToCart.setOnClickListener {
+        productDetailAddToCart.setOnClickListener {
             val cartItem = CartItem2(shopItem.id, shopItem.image, Utils.formatPrice(shopItem.price.toString()), shopItem.title, 1, shopItem.price)
             viewModel.saveToCart(cartItem)
-            Snackbar.make(binding.productDetailAddToCart, "Added to Cart Successfully", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(productDetailAddToCart, "Added to Cart Successfully", Snackbar.LENGTH_SHORT).show()
         }
 
-        binding.productDetailCart.setOnClickListener {
+        productDetailCart.setOnClickListener {
             findNavController().navigate(R.id.action_productDetailFragment_to_cartFragment)
         }
 
-        binding.productDetailLike.setOnClickListener {
+        productDetailLike.setOnClickListener {
             if(like){
                 like = false
                 viewModel.removeFromFavorites(shopItem)
-                binding.productDetailLike.setImageResource(R.drawable.ic_not_favorite)
-                Snackbar.make(binding.productDetailAddToCart, "Removed from favorites", Snackbar.LENGTH_SHORT).show()
+                productDetailLike.setImageResource(R.drawable.ic_not_favorite)
+                Snackbar.make(productDetailAddToCart, "Removed from favorites", Snackbar.LENGTH_SHORT).show()
             } else{
                 like = true
                 viewModel.addToFavorites(shopItem)
-                binding.productDetailLike.setImageResource(R.drawable.ic_favorite)
-                Snackbar.make(binding.productDetailAddToCart, "Added to favorites", Snackbar.LENGTH_SHORT).show()
+                productDetailLike.setImageResource(R.drawable.ic_favorite)
+                Snackbar.make(productDetailAddToCart, "Added to favorites", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun updateViews(){
+    private fun updateViews() = with(binding){
 
-        binding.productDetailPrice.text = "KZT ${shopItem.price}"
-        binding.productDetailTitle.text = shopItem.title
-        binding.productDetailDescription.text = shopItem.description
+        productDetailPrice.text = "KZT ${shopItem.price}"
+        productDetailTitle.text = shopItem.title
+        productDetailDescription.text = shopItem.description
 
-        Glide.with(binding.productDetailImage)
+        Glide.with(productDetailImage)
             .load(shopItem.image)
-            .into(binding.productDetailImage)
+            .into(productDetailImage)
 
-        binding.productDetailRating.text = "${shopItem.rating.rate}"
-        binding.productDetailReviews.text = "${shopItem.rating.count} Reviews"
+        productDetailRating.text = "${shopItem.rating.rate}"
+        productDetailReviews.text = "${shopItem.rating.count} Reviews"
     }
 }

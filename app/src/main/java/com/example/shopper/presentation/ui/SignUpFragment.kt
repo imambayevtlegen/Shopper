@@ -11,55 +11,64 @@ import com.example.shopper.data.util.Utils.validateLoginRequest
 import com.example.shopper.databinding.FragmentSignupBinding
 import com.example.shopper.presentation.viewmodel.RegisterViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class SignUpFragment: Fragment() {
-
+@AndroidEntryPoint
+class SignUpFragment : Fragment() {
     @Inject
-    lateinit var viewModel : RegisterViewModel
-
+    lateinit var viewModel: RegisterViewModel
     private lateinit var binding: FragmentSignupBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_signup, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSignupBinding.bind(view)
 
-        binding.registerButton.setOnClickListener {
-            val username = binding.registerUsername.editableText.toString()
-            val password = binding.registerPassword.editableText.toString()
+        registerButton.setOnClickListener {
+            val username = registerUsername.editableText.toString()
+            val password = registerPassword.editableText.toString()
 
             val result = validateLoginRequest(username, password)
 
-            if(result.successful){
-                binding.registerProgress.visibility = View.VISIBLE
-                binding.registerButton.isEnabled = false
+            if (result.successful) {
+                registerProgress.visibility = View.VISIBLE
+                registerButton.isEnabled = false
 
-                viewModel.successful.observe(viewLifecycleOwner){succesful ->
-                    if(succesful == true ){
-                        binding.registerProgress.visibility = View.INVISIBLE
-                        binding.registerButton.isEnabled = true
+                viewModel.registerUser(username, password)
+
+                viewModel.successful.observe(viewLifecycleOwner) { successful ->
+                    if (successful == true) {
+                        registerProgress.visibility = View.INVISIBLE
+                        registerButton.isEnabled = true
                         findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
                         viewModel.navigated()
-                    } else if(succesful == false){
-                        binding.registerProgress.visibility = View.INVISIBLE
-                        binding.registerButton.isEnabled = true
-                        Snackbar.make(binding.registerButton, "${viewModel.error.value}", Snackbar.LENGTH_SHORT).show()
+                    } else if (successful == false) {
+                        registerProgress.visibility = View.INVISIBLE
+                        registerButton.isEnabled = true
+                        Snackbar.make(
+                            registerButton,
+                            "${viewModel.error.value}",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         viewModel.navigated()
                     }
                 }
-            } else{
-                Snackbar.make(binding.registerButton, "${result.error}", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(registerButton, "${result.error}", Snackbar.LENGTH_SHORT).show()
             }
         }
 
-        binding.registerSignin.setOnClickListener {
-            findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
+        registerSignin.setOnClickListener {
+            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
         }
     }
 

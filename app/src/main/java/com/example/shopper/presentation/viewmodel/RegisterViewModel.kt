@@ -9,37 +9,43 @@ import com.example.shopper.data.util.SharedPreference
 import com.example.shopper.domain.usecase.AuthUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(
     private val authUseCase: AuthUseCase,
     private val sharedPrefUtil: SharedPreference,
-): ViewModel() {
+) : ViewModel() {
 
-    val successful : MutableLiveData<Boolean?> = MutableLiveData()
-    val error : MutableLiveData<String?> = MutableLiveData()
+    val successful: MutableLiveData<Boolean?> = MutableLiveData()
+    val error: MutableLiveData<String?> = MutableLiveData()
 
     private fun saveUserAccessToken(token: String) = sharedPrefUtil.saveUserAccessToken(token)
 
-    fun registerUser(username: String, password: String){
-        authUseCase.registerUser(username, password).onEach { result ->
-            when(result){
+    fun registerUser(username: String, password: String) {
+        viewModelScope.launch {
+            val result = authUseCase.registerUser(username, password)
+            when (result) {
                 is Resource.Loading -> {
                     Log.i("LoginViewModel", "Loading")
                 }
+
                 is Resource.Error -> {
+                    error.postValue("${result.message}")
+                    successful.postValue(false)
                     Log.i("LoginViewModel", "${result.message}")
                 }
+
                 is Resource.Success -> {
                     successful.postValue(true)
                     saveUserAccessToken(username)
                     Log.i("LoginViewModel", "${result.data.toString()}")
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
-    fun navigated(){
+    fun navigated() {
         successful.postValue(null)
         error.postValue(null)
     }

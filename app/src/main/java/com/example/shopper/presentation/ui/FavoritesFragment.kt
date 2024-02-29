@@ -12,7 +12,7 @@ import com.example.shopper.presentation.adapter.FavoritesAdapter
 import com.example.shopper.presentation.viewmodel.FavoritesViewModel
 import javax.inject.Inject
 
-class FavoritesFragment: Fragment() {
+class FavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoritesBinding
 
@@ -29,25 +29,26 @@ class FavoritesFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = FavoritesAdapter()
 
         binding = FragmentFavoritesBinding.bind(view)
 
-        binding.favoritesBack.setOnClickListener {
+        favoritesBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        binding.favoritesBack.setOnClickListener {
+        favoritesBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        binding.favoritesRecyclerView.adapter = adapter
+        favoritesRecyclerView.adapter = adapter
 
         adapter.setOnItemClickListener {
-            val action = FavoritesFragmentDirections.actionFavoritesFragmentToProductDetailFragment(it)
+            val action =
+                FavoritesFragmentDirections.actionFavoritesFragmentToProductDetailFragment(it)
             findNavController().navigate(action)
         }
 
@@ -55,7 +56,7 @@ class FavoritesFragment: Fragment() {
             viewModel.deleteFavorites(it)
         }
 
-        viewModel.getFavorites().observe(viewLifecycleOwner){shopItems ->
+        viewModel.getFavorites().observe(viewLifecycleOwner) { shopItems ->
             adapter.differ.submitList(shopItems)
         }
 
