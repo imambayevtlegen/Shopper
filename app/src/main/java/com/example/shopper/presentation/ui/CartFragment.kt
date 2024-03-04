@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.shopper.R
+import com.example.shopper.data.model.CartItem2
 import com.example.shopper.data.util.Utils
 import com.example.shopper.databinding.FragmentCartBinding
 import com.example.shopper.presentation.adapter.CartAdapter
@@ -31,15 +31,16 @@ class CartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_cart, container, false)
+        binding = FragmentCartBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentCartBinding.bind(view)
 
-        cartViewModel.getCartItems().observe(viewLifecycleOwner) {newList ->
+        // TODO subscriptions, clickListeners
+        cartViewModel.getCartItems().observe(viewLifecycleOwner) {newList: List<CartItem2> ->
             cartAdapter.submitList(newList)
         }
 

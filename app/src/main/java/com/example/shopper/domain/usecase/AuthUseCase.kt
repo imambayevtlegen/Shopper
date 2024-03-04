@@ -5,10 +5,8 @@ import com.example.shopper.data.model.Login
 import com.example.shopper.data.model.LoginResponse
 import com.example.shopper.data.model.Name
 import com.example.shopper.data.model.User
-import com.example.shopper.data.util.Resource
+import com.example.shopper.data.util.Outcome
 import com.example.shopper.domain.repository.ShopRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -19,28 +17,24 @@ class AuthUseCase @Inject constructor(
 
     // TODO no flow
     // TODO use runcatching
-    suspend fun loginUser(username: String, password: String): Resource<LoginResponse> {
+    suspend fun loginUser(username: String, password: String): Outcome<LoginResponse> {
         return runCatching {
             val login = Login(username, password)
             val response = repository.loginUser(login)
-            Log.i("AuthUseCase", "${response.data?.token}")
             response
         }.fold(
             onSuccess = { it },
             onFailure = { e ->
                 when (e) {
                     is HttpException -> {
-                        Log.i("AuthUseCase", "${e.localizedMessage}")
-                        Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+                        Outcome.Error("An unexpected error occurred")
                     }
 
                     is IOException -> {
-                        Log.i("AuthUseCase", "${e.localizedMessage}")
-                        Resource.Error("Couldn't reach server. Check your internet connection.")
+                        Outcome.Error("Couldn't reach server. Check your internet connection.")
                     }
                     else -> {
-                        Log.i("AuthUseCase", "${e.localizedMessage}")
-                        Resource.Error("An unexpected error occurred.")
+                        Outcome.Error("An unexpected error occurred.")
                     }
                 }
             }
@@ -48,7 +42,7 @@ class AuthUseCase @Inject constructor(
 
     }
 
-    suspend fun registerUser(username: String, password: String): Resource<User> {
+    suspend fun registerUser(username: String, password: String): Outcome<User> {
         return runCatching {
             val user = User(
                 email = "new email",
@@ -65,18 +59,15 @@ class AuthUseCase @Inject constructor(
             onFailure = { e ->
                 when (e) {
                     is HttpException -> {
-                        Log.i("AuthUseCase", "${e.localizedMessage}")
-                        Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+                        Outcome.Error("An unexpected error occurred")
                     }
 
                     is IOException -> {
-                        Log.i("AuthUseCase", "${e.localizedMessage}")
-                        Resource.Error("Couldn't reach the server. Check your internet connection")
+                        Outcome.Error("Couldn't reach the server. Check your internet connection")
                     }
 
                     else -> {
-                        Log.i("AuthUseCase", "${e.localizedMessage}")
-                        Resource.Error("An unexpected error occurred")
+                        Outcome.Error("An unexpected error occurred")
                     }
                 }
             }

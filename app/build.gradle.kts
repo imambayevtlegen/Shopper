@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("io.realm.kotlin")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs")
 }
@@ -18,7 +17,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -56,8 +54,6 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
@@ -94,10 +90,6 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:2.6.1")
 
-    //Realm
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
-    implementation("io.realm.kotlin:library-base:1.6.1")
-
 
     val dagger_version = "2.50"
     implementation("com.google.dagger:hilt-android:$dagger_version")
@@ -122,9 +114,5 @@ dependencies {
     val glider_version = "4.16.0"
     implementation("com.github.bumptech.glide:glide:$glider_version")
     kapt("com.github.bumptech.glide:compiler:$glider_version")
-
-    implementation ("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.0") {
-        exclude (group = "org.jetbrains.org.objectweb.asm", module = "util")
-    }
 
 }

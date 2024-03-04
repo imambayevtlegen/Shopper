@@ -12,6 +12,8 @@ import com.example.shopper.presentation.adapter.FavoritesAdapter
 import com.example.shopper.presentation.viewmodel.FavoritesViewModel
 import javax.inject.Inject
 
+// TODO BaseFragment with viewModel, and binding
+// TODO less lateinit use lazy
 class FavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoritesBinding
@@ -32,6 +34,7 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
+        // TODO sepate methods
         adapter = FavoritesAdapter()
 
         binding = FragmentFavoritesBinding.bind(view)

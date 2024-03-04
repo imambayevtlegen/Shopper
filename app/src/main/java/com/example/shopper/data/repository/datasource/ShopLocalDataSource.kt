@@ -3,7 +3,6 @@ package com.example.shopper.data.repository.datasource
 import androidx.lifecycle.LiveData
 import com.example.shopper.data.model.CartItem2
 import com.example.shopper.data.model.ShopItem
-import kotlinx.coroutines.flow.Flow
 
 interface ShopLocalDataSource {
 

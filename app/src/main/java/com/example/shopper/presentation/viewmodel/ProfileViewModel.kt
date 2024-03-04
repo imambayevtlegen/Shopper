@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shopper.data.model.User
-import com.example.shopper.data.util.Resource
+import com.example.shopper.data.util.Outcome
 import com.example.shopper.data.util.SharedPreference
 import com.example.shopper.domain.usecase.ProfileUseCase
 import kotlinx.coroutines.Dispatchers.IO
@@ -16,10 +16,10 @@ class ProfileViewModel @Inject constructor(
     private val sharedPreference: SharedPreference
 ): ViewModel() {
 
-    val user : MutableLiveData<Resource<User>> = MutableLiveData()
+    val user : MutableLiveData<Outcome<User>> = MutableLiveData()
 
     fun getUser(id: Int) = viewModelScope.launch(IO) {
-        user.postValue(Resource.Loading())
+        user.postValue(Outcome.Loading())
         val result = runCatching {
             profileUseCase.getUser(id)
         }
@@ -28,7 +28,7 @@ class ProfileViewModel @Inject constructor(
                 user.postValue(apiResult)
             },
             onFailure = { e ->
-                user.postValue(Resource.Error(message = e.localizedMessage ?: "Unknown error"))
+                user.postValue(Outcome.Error(message = e.localizedMessage ?: "Unknown error"))
             }
         )
     }

@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData
 import com.example.shopper.data.model.*
 import com.example.shopper.data.repository.datasource.ShopLocalDataSource
 import com.example.shopper.data.repository.datasource.ShopRemoteDataSource
-import com.example.shopper.data.util.Resource
+import com.example.shopper.data.util.Outcome
 import com.example.shopper.domain.repository.ShopRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import retrofit2.Response
 
@@ -18,67 +17,67 @@ class ShopRepositoryImpl @Inject constructor(
 ): ShopRepository {
 
 
-    override suspend fun getAllProducts(): Resource<Shop> {
+    override suspend fun getAllProducts(): Outcome<Shop> {
         return responseToShopResult(remoteDataSource.getAllProducts())
     }
 
-    override suspend fun getProduct(itemId: Int): Resource<ShopItem> {
+    override suspend fun getProduct(itemId: Int): Outcome<ShopItem> {
         return responseToShopItemResult(remoteDataSource.getProduct(itemId))
     }
 
-    override suspend fun getAllCategories(): Resource<Category> {
+    override suspend fun getAllCategories(): Outcome<Category> {
         return responseToCategoryResult(remoteDataSource.getAllCategories())
     }
 
-    override suspend fun getCategoryProducts(category: String): Resource<Shop> {
+    override suspend fun getCategoryProducts(category: String): Outcome<Shop> {
         return responseToShopResult(remoteDataSource.getCategoryProducts(category))
     }
 
-    override suspend fun uploadProduct(shopItem: ShopItem): Resource<ShopItem>{
+    override suspend fun uploadProduct(shopItem: ShopItem): Outcome<ShopItem>{
         return responseToShopItemResult(remoteDataSource.uploadProduct(shopItem))
     }
 
-    override suspend fun updateProduct(id: Int, shopItem: ShopItem): Resource<ShopItem>{
+    override suspend fun updateProduct(id: Int, shopItem: ShopItem): Outcome<ShopItem>{
         return responseToShopItemResult(remoteDataSource.updateProduct(id, shopItem))
     }
 
-    override suspend fun deleteProduct(id: Int): Resource<ShopItem>{
+    override suspend fun deleteProduct(id: Int): Outcome<ShopItem>{
         return responseToShopItemResult(remoteDataSource.deleteProduct(id))
     }
 
-    override suspend fun getCart(id: Int): Resource<Cart>{
+    override suspend fun getCart(id: Int): Outcome<Cart>{
         return responseToCartResult(remoteDataSource.getCart(id))
     }
 
-    override suspend fun getCartProducts(id: Int): Resource<List<Product>>{
+    override suspend fun getCartProducts(id: Int): Outcome<List<Product>>{
         return responseToCartProducts(remoteDataSource.getCartProducts(id))
     }
 
-    override suspend fun addToCart(cartItem: CartItem): Resource<CartItem>{
+    override suspend fun addToCart(cartItem: CartItem): Outcome<CartItem>{
         return responseToCartItemResult(remoteDataSource.addToCart(cartItem))
     }
 
-    override suspend fun updateCart(id: Int, cartItem: CartItem): Resource<CartItem>{
+    override suspend fun updateCart(id: Int, cartItem: CartItem): Outcome<CartItem>{
         return responseToCartItemResult(remoteDataSource.updateCart(id, cartItem))
     }
 
-    override suspend fun deleteCart(id: Int): Resource<CartItem>{
+    override suspend fun deleteCart(id: Int): Outcome<CartItem>{
         return responseToCartItemResult(remoteDataSource.deleteCart(id))
     }
 
-    override suspend fun getUser(id: Int): Resource<User>{
+    override suspend fun getUser(id: Int): Outcome<User>{
         return responseToUserResult(remoteDataSource.getUser(id))
     }
 
-    override suspend fun updateUser(id: Int, user: User): Resource<User>{
+    override suspend fun updateUser(id: Int, user: User): Outcome<User>{
         return responseToUserResult(remoteDataSource.updateUser(id, user))
     }
 
-    override suspend fun loginUser(login: Login): Resource<LoginResponse>{
+    override suspend fun loginUser(login: Login): Outcome<LoginResponse>{
         return responseToString(remoteDataSource.loginUser(login))
     }
 
-    override suspend fun registerUser(user: User): Resource<User>{
+    override suspend fun registerUser(user: User): Outcome<User>{
         return responseToUserResult(remoteDataSource.registerUser(user))
     }
 
@@ -120,74 +119,91 @@ class ShopRepositoryImpl @Inject constructor(
 
 
 
-    private fun responseToShopResult(response: Response<Shop>): Resource<Shop>{
-        if (response.isSuccessful){
-            response.body()?.let { result ->
-                return Resource.Success(result)
+    private fun responseToShopResult(result: Result<Shop>): Outcome<Shop> {
+        return result.fold(
+            onSuccess = { shop ->
+                Outcome.Success(shop)
+            },
+            onFailure = { throwable ->
+                Outcome.Error(message = throwable.message ?: "Unknown error")
             }
-        }
-        return Resource.Error(message = "${response.errorBody()?.string()}")
+        )
     }
 
-    private fun responseToShopItemResult(response: Response<ShopItem>): Resource<ShopItem>{
-        if( response.isSuccessful){
-            response.body()?.let { result ->
-                return Resource.Success(result)
+    private fun responseToShopItemResult(result: Result<ShopItem>) : Outcome<ShopItem>{
+        return result.fold(
+            onSuccess = { shopItem ->
+                Outcome.Success(shopItem)
+            },
+            onFailure = { throwable ->
+                Outcome.Error(message = throwable.message ?: "Unknown error")
             }
-        }
-        return Resource.Error(message = "${response.errorBody()?.string()}")
+        )
     }
 
-    private fun responseToString(response: Response<LoginResponse>): Resource<LoginResponse>{
-        if(response.isSuccessful){
-            response.body()?.let {
-                return Resource.Success(it)
+    private fun responseToString(result: Result<LoginResponse>) : Outcome<LoginResponse>{
+        return result.fold(
+            onSuccess = { loginResponse ->
+                Outcome.Success(loginResponse)
+            },
+            onFailure = { throwable ->
+                Outcome.Error(message = throwable.message ?: "Unknown error")
             }
-        }
-        return Resource.Error(message = "${response.errorBody()?.string()}")
+        )
     }
 
-    private fun responseToCartProducts(response: Response<CartItem>): Resource<List<Product>>{
-        if (response.isSuccessful){
-            response.body()?.let{
-                return Resource.Success(it.products)
+    private fun responseToCartProducts(result: Result<CartItem>) : Outcome<List<Product>>{
+        return result.fold(
+            onSuccess = { cartItem ->
+                Outcome.Success(cartItem.products)
+            },
+            onFailure = { throwable ->
+                Outcome.Error(message = throwable.message ?: "Unknown error")
             }
-        }
-        return Resource.Error(message = "${response.errorBody()?.string()}")
+        )
     }
 
-    private fun responseToCartResult(response: Response<Cart>): Resource<Cart>{
-        if(response.isSuccessful){
-            response.body()?.let { "${response.errorBody()?.string()}"
+    private fun responseToCartResult(result: Result<Cart>) : Outcome<Cart>{
+        return result.fold(
+            onSuccess = { cart ->
+                Outcome.Success(cart)
+            },
+            onFailure = { throwable ->
+                Outcome.Error(message = throwable.message ?: "Unknown error")
             }
-        }
-        return Resource.Error(message = "${response.errorBody()?.string()}")
+        )
     }
 
-    private fun responseToCartItemResult(response: Response<CartItem>): Resource<CartItem>{
-        if (response.isSuccessful){
-            response.body()?.let { result ->
-                return Resource.Success(result)
+    private fun responseToCartItemResult(result: Result<CartItem>) : Outcome<CartItem>{
+        return result.fold(
+            onSuccess = { cartItem ->
+                Outcome.Success(cartItem)
+            },
+            onFailure = { throwable ->
+                Outcome.Error(message = throwable.message ?: "Unknown error")
             }
-        }
-        return Resource.Error(message = "${response.errorBody()?.string()}")
+        )
     }
 
-    private fun responseToCategoryResult(response: Response<Category>): Resource<Category>{
-        if (response.isSuccessful){
-            response.body()?.let { result ->
-                return Resource.Success(result)
+    private fun responseToCategoryResult(result: Result<Category>) : Outcome<Category>{
+        return result.fold(
+            onSuccess = { category ->
+                Outcome.Success(category)
+            },
+            onFailure = { throwable ->
+                Outcome.Error(message = throwable.message ?: "Unknown error")
             }
-        }
-        return Resource.Error(message = "${response.errorBody()?.string()}")
+        )
     }
 
-    private fun responseToUserResult(response: Response<User>): Resource<User>{
-        if(response.isSuccessful){
-            response.body()?.let { result ->
-                return Resource.Success(result)
+    private fun responseToUserResult(result: Result<User>) : Outcome<User>{
+        return result.fold(
+            onSuccess = { user ->
+                Outcome.Success(user)
+            },
+            onFailure = { throwable ->
+                Outcome.Error(message = throwable.message ?: "Unknown error")
             }
-        }
-        return Resource.Error(message = "${response.errorBody()?.string()}")
+        )
     }
 }

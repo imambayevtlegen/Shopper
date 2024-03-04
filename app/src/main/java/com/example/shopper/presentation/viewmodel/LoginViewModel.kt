@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shopper.data.util.Resource
+import com.example.shopper.data.util.Outcome
 import com.example.shopper.data.util.SharedPreference
 import com.example.shopper.domain.usecase.AuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,17 +28,17 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val result = authUseCase.loginUser(username, password)
             when (result) {
-                is Resource.Loading -> {
+                is Outcome.Loading -> {
                     Log.i("LoginViewModel", "Loading")
                 }
 
-                is Resource.Error -> {
+                is Outcome.Error -> {
                     error.postValue("${result.message}")
                     successful.postValue(false)
                     Log.i("LoginViewModel", "Error ${result.message}")
                 }
 
-                is Resource.Success -> {
+                is Outcome.Success -> {
                     successful.postValue(true)
                     saveUserAccessToken("${result.data?.token}")
                     Log.i("LoginViewModel", "Success ${result.data?.token}")

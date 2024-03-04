@@ -5,8 +5,6 @@ import com.example.shopper.data.db.ShopDAO
 import com.example.shopper.data.model.CartItem2
 import com.example.shopper.data.model.ShopItem
 import com.example.shopper.data.repository.datasource.ShopLocalDataSource
-import io.realm.kotlin.Realm
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ShopLocalDataSourceImpl @Inject constructor(

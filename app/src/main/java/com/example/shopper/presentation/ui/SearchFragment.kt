@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.shopper.R
 import com.example.shopper.data.model.ShopItem
-import com.example.shopper.data.util.Resource
+import com.example.shopper.data.util.Outcome
 import com.example.shopper.databinding.FragmentSearchBinding
 import com.example.shopper.presentation.adapter.SearchAdapter
 import com.example.shopper.presentation.viewmodel.HomeViewModel
@@ -46,15 +46,15 @@ class SearchFragment: Fragment() {
 
         viewModel.products.observe(viewLifecycleOwner){ result ->
             when(result){
-                is Resource.Success -> {
+                is Outcome.Success -> {
                     Log.i("SearchFragment", "${result.data}")
                     productsList = result.data!!
                     adapter.differ.submitList(result.data)
                 }
-                is Resource.Loading -> {
+                is Outcome.Loading -> {
                     Log.i("SearchFragment", "Loading..")
                 }
-                is Resource.Error -> {
+                is Outcome.Error -> {
                     Log.i("SearchFragment", "${result.message}")
                 }
             }

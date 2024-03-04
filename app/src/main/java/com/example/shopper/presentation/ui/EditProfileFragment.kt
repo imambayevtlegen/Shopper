@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.shopper.R
 import com.example.shopper.data.model.User
-import com.example.shopper.data.util.Resource
+import com.example.shopper.data.util.Outcome
 import com.example.shopper.databinding.FragmentEditProfileBinding
 import com.example.shopper.presentation.viewmodel.EditProfileViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -18,12 +18,12 @@ import javax.inject.Inject
 
 class EditProfileFragment: Fragment() {
 
+    @Inject lateinit var viewModel: EditProfileViewModel
+
     private lateinit var binding: FragmentEditProfileBinding
 
+    // TODO Lazy
     private lateinit var user: User
-
-    @Inject
-    lateinit var viewModel: EditProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +39,7 @@ class EditProfileFragment: Fragment() {
         binding = FragmentEditProfileBinding.bind(view)
         user = EditProfileFragmentArgs.fromBundle(requireArguments()).user
 
+        // TODO sepater method
         editProfileFirstName.setText(user.name.firstname)
         editProfileLastName.setText(user.name.lastname)
         editProfileEmailAddress.setText(user.email)
@@ -54,12 +55,12 @@ class EditProfileFragment: Fragment() {
                 username = "${editProfileUsername.editableText ?: "new username"}"))
             viewModel.theUser.observe(viewLifecycleOwner){ result ->
                 when(result){
-                    is Resource.Loading -> {
+                    is Outcome.Loading -> {
                         editProfileProgress.visibility = View.VISIBLE
                         editProfileButton.isEnabled = true
                         Log.i("EditProfileFragment", "Loading..")
                     }
-                    is Resource.Success -> {
+                    is Outcome.Success -> {
                         editProfileProgress.visibility = View.VISIBLE
                         editProfileButton.isEnabled = true
                         Log.i("EditProfileFragment", "${result.data}")
@@ -71,7 +72,7 @@ class EditProfileFragment: Fragment() {
                                 findNavController().navigateUp()
                             }.show()
                     }
-                    is Resource.Error -> {
+                    is Outcome.Error -> {
                         editProfileProgress.visibility = View.INVISIBLE
                         editProfileButton.isEnabled = true
                         Snackbar.make(editProfileButton, "Error ${result.message}", Snackbar.LENGTH_SHORT).show()

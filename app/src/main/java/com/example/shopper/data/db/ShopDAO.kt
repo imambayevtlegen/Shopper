@@ -2,7 +2,6 @@ package com.example.shopper.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 import com.example.shopper.data.model.CartItem2
 import com.example.shopper.data.model.ShopItem
 

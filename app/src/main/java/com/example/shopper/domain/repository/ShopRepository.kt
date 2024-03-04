@@ -2,26 +2,26 @@ package com.example.shopper.domain.repository
 
 import androidx.lifecycle.LiveData
 import com.example.shopper.data.model.*
-import com.example.shopper.data.util.Resource
-import kotlinx.coroutines.flow.Flow
+import com.example.shopper.data.util.Outcome
+import retrofit2.Response
 
 interface ShopRepository {
-    suspend fun getAllProducts(): Resource<Shop>
-    suspend fun getProduct(itemId: Int): Resource<ShopItem>
-    suspend fun getAllCategories(): Resource<Category>
-    suspend fun getCategoryProducts(category: String): Resource<Shop>
-    suspend fun uploadProduct(shopItem: ShopItem): Resource<ShopItem>
-    suspend fun updateProduct(id: Int, shopItem: ShopItem): Resource<ShopItem>
-    suspend fun deleteProduct(id: Int): Resource<ShopItem>
-    suspend fun getCart(id: Int): Resource<Cart>
-    suspend fun getCartProducts(id: Int): Resource<List<Product>>
-    suspend fun addToCart(cartItem: CartItem): Resource<CartItem>
-    suspend fun updateCart(id: Int, cartItem: CartItem): Resource<CartItem>
-    suspend fun deleteCart(id: Int): Resource<CartItem>
-    suspend fun getUser(id: Int): Resource<User>
-    suspend fun updateUser(id: Int, user: User): Resource<User>
-    suspend fun loginUser(login: Login): Resource<LoginResponse>
-    suspend fun registerUser(user: User): Resource<User>
+    suspend fun getAllProducts(): Outcome<Shop>
+    suspend fun getProduct(itemId: Int): Outcome<ShopItem>
+    suspend fun getAllCategories(): Outcome<Category>
+    suspend fun getCategoryProducts(category: String): Outcome<Shop>
+    suspend fun uploadProduct(shopItem: ShopItem): Outcome<ShopItem>
+    suspend fun updateProduct(id: Int, shopItem: ShopItem): Outcome<ShopItem>
+    suspend fun deleteProduct(id: Int): Outcome<ShopItem>
+    suspend fun getCart(id: Int): Outcome<Cart>
+    suspend fun getCartProducts(id: Int): Outcome<List<Product>>
+    suspend fun addToCart(cartItem: CartItem): Outcome<CartItem>
+    suspend fun updateCart(id: Int, cartItem: CartItem): Outcome<CartItem>
+    suspend fun deleteCart(id: Int): Outcome<CartItem>
+    suspend fun getUser(id: Int): Outcome<User>
+    suspend fun updateUser(id: Int, user: User): Outcome<User>
+    suspend fun loginUser(login: Login): Outcome<LoginResponse>
+    suspend fun registerUser(user: User): Outcome<User>
 
     suspend fun addToCartItems(cartItem2: CartItem2)
     fun getCartItems(): LiveData<List<CartItem2>>

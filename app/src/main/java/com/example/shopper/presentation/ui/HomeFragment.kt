@@ -76,6 +76,8 @@ class HomeFragment: Fragment() {
 
         viewModel.products.observe(viewLifecycleOwner){response ->
             when(response){
+                // TODO different livedata
+                // TODO use kotlin result
                 is Resource.Success -> {
                     adapter.differ.submitList(response.data)
                     Log.i("HomeFragment", "${response.data}")

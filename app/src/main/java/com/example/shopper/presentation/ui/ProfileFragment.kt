@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.shopper.R
 import com.example.shopper.data.model.User
-import com.example.shopper.data.util.Resource
+import com.example.shopper.data.util.Outcome
 import com.example.shopper.databinding.FragmentProfileBinding
 import com.example.shopper.presentation.viewmodel.ProfileViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -41,15 +41,15 @@ class ProfileFragment: Fragment() {
 
         viewModel.user.observe(viewLifecycleOwner){ result ->
             when(result){
-                is Resource.Loading -> {
+                is Outcome.Loading -> {
                     Log.i("ProfileFragment", "Loading..")
                 }
-                is Resource.Success -> {
+                is Outcome.Success -> {
                     user = result.data
                     profileName.text = "${result.data?.name?.firstname} ${result.data?.name?.lastname}"
                     profileEmail.text = "${result.data?.email}"
                 }
-                is Resource.Error -> {
+                is Outcome.Error -> {
                     Log.i("ProfileFragment", "Error ${result.message}")
                 }
             }

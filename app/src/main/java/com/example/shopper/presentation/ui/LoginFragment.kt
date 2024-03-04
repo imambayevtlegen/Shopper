@@ -30,6 +30,7 @@ class LoginFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,6 +41,7 @@ class LoginFragment : Fragment() {
 
         loginButton.setOnClickListener {
 
+            // TODO different methods
             val username = loginUsername.editableText.toString()
             val password = loginPassword.editableText.toString()
 
