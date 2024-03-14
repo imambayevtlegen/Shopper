@@ -78,6 +78,6 @@ class CartAdapter: ListAdapter<CartItem2, CartAdapter.CartViewHolder>(DiffUtilIt
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val cartItem = getItem(position)
+        holder.bindData(cartItem)
     }
-
 }

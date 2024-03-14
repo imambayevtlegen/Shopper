@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.shopper.R
+import com.example.shopper.data.model.ShopItem
 import com.example.shopper.databinding.FragmentFavoritesBinding
 import com.example.shopper.presentation.adapter.FavoritesAdapter
 import com.example.shopper.presentation.viewmodel.FavoritesViewModel
@@ -42,11 +43,6 @@ class FavoritesFragment : Fragment() {
         favoritesBack.setOnClickListener {
             findNavController().navigateUp()
         }
-
-        favoritesBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
         favoritesRecyclerView.adapter = adapter
 
         adapter.setOnItemClickListener {
@@ -59,8 +55,8 @@ class FavoritesFragment : Fragment() {
             viewModel.deleteFavorites(it)
         }
 
-        viewModel.getFavorites().observe(viewLifecycleOwner) { shopItems ->
-            adapter.differ.submitList(shopItems)
+        viewModel.getFavorites().observe(viewLifecycleOwner) { newList: List<ShopItem> ->
+            adapter.submitList(newList)
         }
 
         binding.favoritesDelete.setOnClickListener {

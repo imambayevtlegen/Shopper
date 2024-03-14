@@ -4,14 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.shopper.data.model.ShopItem
 import com.example.shopper.databinding.SearchItemBinding
 
-class SearchAdapter: RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+class SearchAdapter: ListAdapter<ShopItem ,SearchAdapter.SearchViewHolder>(DiffUtilItemCallback) {
 
-    private val callback = object : DiffUtil.ItemCallback<ShopItem>(){
+    object DiffUtilItemCallback : DiffUtil.ItemCallback<ShopItem>(){
         override fun areItemsTheSame(oldItem: ShopItem, newItem: ShopItem): Boolean {
             return oldItem.id == newItem.id
         }
@@ -20,8 +21,6 @@ class SearchAdapter: RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
             return oldItem == newItem
         }
     }
-
-    val differ = AsyncListDiffer(this, callback)
 
     private var onItemClickListener : ((ShopItem) -> Unit) = {}
 
@@ -56,9 +55,7 @@ class SearchAdapter: RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        val shopItem = differ.currentList[position]
+        val shopItem = getItem(position)
         holder.bindData(shopItem)
     }
-
-    override fun getItemCount() = differ.currentList.size
 }

@@ -16,7 +16,7 @@ import com.example.shopper.presentation.adapter.SearchAdapter
 import com.example.shopper.presentation.viewmodel.HomeViewModel
 import javax.inject.Inject
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: HomeViewModel
@@ -37,23 +37,25 @@ class SearchFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding){
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSearchBinding.bind(view)
 
         viewModel.getAllProducts()
 
-        viewModel.products.observe(viewLifecycleOwner){ result ->
-            when(result){
+        viewModel.products.observe(viewLifecycleOwner) { result ->
+            when (result) {
                 is Outcome.Success -> {
                     Log.i("SearchFragment", "${result.data}")
                     productsList = result.data!!
-                    adapter.differ.submitList(result.data)
+                    adapter.submitList(result.data)
                 }
+
                 is Outcome.Loading -> {
                     Log.i("SearchFragment", "Loading..")
                 }
+
                 is Outcome.Error -> {
                     Log.i("SearchFragment", "${result.message}")
                 }
@@ -61,21 +63,23 @@ class SearchFragment: Fragment() {
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                productsList2 = productsList.filter { it.title.contains("$query",ignoreCase = true)}
-                adapter.differ.submitList(productsList2)
+                productsList2 =
+                    productsList.filter { it.title.contains("$query", ignoreCase = true) }
+                adapter.submitList(productsList2)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                productsList2 = productsList.filter { it.title.contains("$newText",ignoreCase = true)}
-                adapter.differ.submitList(productsList2)
+                productsList2 =
+                    productsList.filter { it.title.contains("$newText", ignoreCase = true) }
+                adapter.submitList(productsList2)
                 return true
             }
 
         })
 
         searchView.setOnCloseListener {
-            adapter.differ.submitList(productsList)
+            adapter.submitList(productsList)
             true
         }
 

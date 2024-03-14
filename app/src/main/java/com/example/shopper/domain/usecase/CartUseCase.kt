@@ -3,7 +3,6 @@ package com.example.shopper.domain.usecase
 import androidx.lifecycle.LiveData
 import com.example.shopper.data.model.CartItem2
 import com.example.shopper.domain.repository.ShopRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 // TODO usecase is a single function class or interface

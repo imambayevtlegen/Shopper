@@ -16,7 +16,7 @@ import com.example.shopper.presentation.viewmodel.ProductDetailViewModel
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class ProductDetailFragment: Fragment() {
+class ProductDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentProductDetailBinding
 
@@ -53,9 +53,20 @@ class ProductDetailFragment: Fragment() {
         }
 
         productDetailAddToCart.setOnClickListener {
-            val cartItem = CartItem2(shopItem.id, shopItem.image, Utils.formatPrice(shopItem.price.toString()), shopItem.title, 1, shopItem.price)
+            val cartItem = CartItem2(
+                shopItem.id,
+                shopItem.image,
+                Utils.formatPrice(shopItem.price.toString()),
+                shopItem.title,
+                1,
+                shopItem.price
+            )
             viewModel.saveToCart(cartItem)
-            Snackbar.make(productDetailAddToCart, "Added to Cart Successfully", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+                productDetailAddToCart,
+                "Added to Cart Successfully",
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
 
         productDetailCart.setOnClickListener {
@@ -63,21 +74,26 @@ class ProductDetailFragment: Fragment() {
         }
 
         productDetailLike.setOnClickListener {
-            if(like){
+            if (like) {
                 like = false
                 viewModel.removeFromFavorites(shopItem)
                 productDetailLike.setImageResource(R.drawable.ic_not_favorite)
-                Snackbar.make(productDetailAddToCart, "Removed from favorites", Snackbar.LENGTH_SHORT).show()
-            } else{
+                Snackbar.make(
+                    productDetailAddToCart,
+                    "Removed from favorites",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            } else {
                 like = true
                 viewModel.addToFavorites(shopItem)
                 productDetailLike.setImageResource(R.drawable.ic_favorite)
-                Snackbar.make(productDetailAddToCart, "Added to favorites", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(productDetailAddToCart, "Added to favorites", Snackbar.LENGTH_SHORT)
+                    .show()
             }
         }
     }
 
-    private fun updateViews() = with(binding){
+    private fun updateViews() = with(binding) {
 
         productDetailPrice.text = "KZT ${shopItem.price}"
         productDetailTitle.text = shopItem.title

@@ -15,7 +15,7 @@ import com.example.shopper.presentation.viewmodel.ProfileViewModel
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class ProfileFragment: Fragment() {
+class ProfileFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: ProfileViewModel
@@ -39,16 +39,19 @@ class ProfileFragment: Fragment() {
 
         viewModel.getUser(1)
 
-        viewModel.user.observe(viewLifecycleOwner){ result ->
-            when(result){
+        viewModel.user.observe(viewLifecycleOwner) { result ->
+            when (result) {
                 is Outcome.Loading -> {
                     Log.i("ProfileFragment", "Loading..")
                 }
+
                 is Outcome.Success -> {
                     user = result.data
-                    profileName.text = "${result.data?.name?.firstname} ${result.data?.name?.lastname}"
+                    profileName.text =
+                        "${result.data?.name?.firstname} ${result.data?.name?.lastname}"
                     profileEmail.text = "${result.data?.email}"
                 }
+
                 is Outcome.Error -> {
                     Log.i("ProfileFragment", "Error ${result.message}")
                 }
@@ -83,7 +86,7 @@ class ProfileFragment: Fragment() {
         }
 
         profileReportBug.setOnClickListener {
-            Snackbar.make(profileNotifications,"Coming soon...",Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(profileNotifications, "Coming soon...", Snackbar.LENGTH_SHORT).show()
         }
 
         profileLogout.setOnClickListener {

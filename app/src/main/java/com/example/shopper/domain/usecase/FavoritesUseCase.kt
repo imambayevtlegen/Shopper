@@ -3,7 +3,6 @@ package com.example.shopper.domain.usecase
 import androidx.lifecycle.LiveData
 import com.example.shopper.data.model.ShopItem
 import com.example.shopper.domain.repository.ShopRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FavoritesUseCase @Inject constructor(

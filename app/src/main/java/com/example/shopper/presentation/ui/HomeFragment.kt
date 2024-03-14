@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.shopper.R
 import com.example.shopper.data.model.Category2
-import com.example.shopper.data.util.Resource
+import com.example.shopper.data.util.Outcome
 import com.example.shopper.databinding.FragmentHomeBinding
 import com.example.shopper.presentation.adapter.HomeAdapter
 import com.example.shopper.presentation.viewmodel.HomeViewModel
@@ -45,7 +45,7 @@ class HomeFragment: Fragment() {
 
         viewModel.categories.observe(viewLifecycleOwner){response ->
             when(response){
-                is Resource.Success -> {
+                is Outcome.Success -> {
                     val categories = response.data
                     val chip = Chip(requireContext())
                     chip.text = "All"
@@ -63,10 +63,10 @@ class HomeFragment: Fragment() {
                         chipGroup.addView(chip)
                     }
                 }
-                is Resource.Loading -> {
+                is Outcome.Loading -> {
                     Log.i("HomeFragment", "Loading..")
                 }
-                is Resource.Error -> {
+                is Outcome.Error -> {
                     Log.i("HomeFragment", "${response.message}")
                 }
             }
@@ -78,14 +78,14 @@ class HomeFragment: Fragment() {
             when(response){
                 // TODO different livedata
                 // TODO use kotlin result
-                is Resource.Success -> {
-                    adapter.differ.submitList(response.data)
+                is Outcome.Success -> {
+                    adapter.submitList(response.data)
                     Log.i("HomeFragment", "${response.data}")
                 }
-                is Resource.Loading -> {
+                is Outcome.Loading -> {
                     Log.i("HomeFragment", "Loading..")
                 }
-                is Resource.Error -> {
+                is Outcome.Error -> {
                     Log.i("HomeFragment", "${response.message}")
                 }
             }

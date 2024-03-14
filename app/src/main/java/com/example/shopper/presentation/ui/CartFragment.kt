@@ -40,7 +40,7 @@ class CartFragment : Fragment() {
 
 
         // TODO subscriptions, clickListeners
-        cartViewModel.getCartItems().observe(viewLifecycleOwner) {newList: List<CartItem2> ->
+        cartViewModel.getCartItems().observe(viewLifecycleOwner) { newList: List<CartItem2> ->
             cartAdapter.submitList(newList)
         }
 

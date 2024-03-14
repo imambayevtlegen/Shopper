@@ -77,7 +77,11 @@ class HomeViewModel @Inject constructor(
                     products.postValue(apiResults)
                 },
                 onFailure = { e ->
-                    products.postValue(Outcome.Error(message = e.localizedMessage ?: "Unknown error"))
+                    products.postValue(
+                        Outcome.Error(
+                            message = e.localizedMessage ?: "Unknown error"
+                        )
+                    )
                 }
             )
         } else {

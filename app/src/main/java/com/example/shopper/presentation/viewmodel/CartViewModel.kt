@@ -15,11 +15,16 @@ class CartViewModel @Inject constructor(
     val totalItems: MutableLiveData<Int> = MutableLiveData()
     val totalItemsPrice: MutableLiveData<Double> = MutableLiveData()
 
-    fun getCartItems() = liveData {
-        cartUseCase.getCartItems().collect {
-            emit(it)
-            computeTotal(it)
+    fun getCartItems() = liveData<List<CartItem2>> {
+        val cartItems = cartUseCase.getCartItems()
+        emitSource(cartItems)
+        cartItems.value?.let { computeTotal(it) }
+
+        val observer = Observer<List<CartItem2>> { items ->
+            computeTotal(items)
         }
+        cartItems.observeForever(observer)
+
     }
 
     fun computeTotal(cartItems: List<CartItem2>) = viewModelScope.launch(IO) {

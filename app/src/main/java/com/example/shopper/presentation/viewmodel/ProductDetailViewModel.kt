@@ -2,7 +2,6 @@ package com.example.shopper.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shopper.data.model.CartItem
 import com.example.shopper.data.model.CartItem2
 import com.example.shopper.data.model.ShopItem
 import com.example.shopper.domain.usecase.CartUseCase

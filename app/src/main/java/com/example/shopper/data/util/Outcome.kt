@@ -22,9 +22,10 @@ sealed class Outcome<T>(
 //    }
 
 
-/*
-sealed class Resource{
-    data class Success<T>(val data: T): Resource
-    data object Loading: Resource
-    data class Error(val message: String): Resource
- */
+
+//sealed class Outcome {
+//    data class Success<T>(val data: T) : Outcome
+//    data object Loading : Outcome
+//    data class Error(val message: String) : Outcome
+//}
+//

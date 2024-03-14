@@ -1,9 +1,17 @@
 package com.example.shopper.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.shopper.data.model.*
+import com.example.shopper.data.model.Cart
+import com.example.shopper.data.model.CartItem
+import com.example.shopper.data.model.CartItem2
+import com.example.shopper.data.model.Category
+import com.example.shopper.data.model.Login
+import com.example.shopper.data.model.LoginResponse
+import com.example.shopper.data.model.Product
+import com.example.shopper.data.model.Shop
+import com.example.shopper.data.model.ShopItem
+import com.example.shopper.data.model.User
 import com.example.shopper.data.util.Outcome
-import retrofit2.Response
 
 interface ShopRepository {
     suspend fun getAllProducts(): Outcome<Shop>
@@ -30,7 +38,7 @@ interface ShopRepository {
     suspend fun clearCart()
 
     suspend fun addToFavorites(shopItem: ShopItem)
-    fun getFavoriteItems(): LiveData<List<ShopItem>>
+    fun getFavoriteItems() : LiveData<List<ShopItem>>
     suspend fun deleteFavoriteItem(shopItem: ShopItem)
     suspend fun clearFavorites()
 }

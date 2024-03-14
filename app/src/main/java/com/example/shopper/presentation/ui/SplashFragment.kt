@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SplashFragment: Fragment() {
+class SplashFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: SplashViewModel
@@ -31,9 +31,9 @@ class SplashFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if (viewModel.loggedIn){
+            if (viewModel.loggedIn) {
                 findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
-            } else{
+            } else {
                 findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
             }
         }, 2000L)

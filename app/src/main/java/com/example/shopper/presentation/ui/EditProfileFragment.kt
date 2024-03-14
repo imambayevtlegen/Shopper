@@ -16,9 +16,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class EditProfileFragment: Fragment() {
+class EditProfileFragment : Fragment() {
 
-    @Inject lateinit var viewModel: EditProfileViewModel
+    @Inject
+    lateinit var viewModel: EditProfileViewModel
 
     private lateinit var binding: FragmentEditProfileBinding
 
@@ -50,16 +51,20 @@ class EditProfileFragment: Fragment() {
         }
 
         editProfileButton.setOnClickListener {
-            viewModel.updateUser(1, user.copy(
-                id = 10,
-                username = "${editProfileUsername.editableText ?: "new username"}"))
-            viewModel.theUser.observe(viewLifecycleOwner){ result ->
-                when(result){
+            viewModel.updateUser(
+                1, user.copy(
+                    id = 10,
+                    username = "${editProfileUsername.editableText ?: "new username"}"
+                )
+            )
+            viewModel.theUser.observe(viewLifecycleOwner) { result ->
+                when (result) {
                     is Outcome.Loading -> {
                         editProfileProgress.visibility = View.VISIBLE
                         editProfileButton.isEnabled = true
                         Log.i("EditProfileFragment", "Loading..")
                     }
+
                     is Outcome.Success -> {
                         editProfileProgress.visibility = View.VISIBLE
                         editProfileButton.isEnabled = true
@@ -68,14 +73,19 @@ class EditProfileFragment: Fragment() {
                             .setTitle("Updated successfully")
                             .setMessage("You have updated your profile successfully")
                             .setCancelable(false)
-                            .setPositiveButton("Okay"){_,_, ->
+                            .setPositiveButton("Okay") { _, _ ->
                                 findNavController().navigateUp()
                             }.show()
                     }
+
                     is Outcome.Error -> {
                         editProfileProgress.visibility = View.INVISIBLE
                         editProfileButton.isEnabled = true
-                        Snackbar.make(editProfileButton, "Error ${result.message}", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            editProfileButton,
+                            "Error ${result.message}",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         Log.i("EditProfileFragment", "Error ${result.message}")
                     }
                 }

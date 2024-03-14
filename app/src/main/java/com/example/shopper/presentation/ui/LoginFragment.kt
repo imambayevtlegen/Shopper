@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.shopper.R
+import com.example.shopper.data.util.Utils.validateLoginRequest
 import com.example.shopper.databinding.FragmentLoginBinding
 import com.example.shopper.presentation.viewmodel.LoginViewModel
-import com.example.shopper.data.util.Utils.validateLoginRequest
 import com.google.android.material.snackbar.Snackbar
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint

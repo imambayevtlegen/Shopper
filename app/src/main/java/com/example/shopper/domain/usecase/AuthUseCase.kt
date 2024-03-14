@@ -33,6 +33,7 @@ class AuthUseCase @Inject constructor(
                     is IOException -> {
                         Outcome.Error("Couldn't reach server. Check your internet connection.")
                     }
+
                     else -> {
                         Outcome.Error("An unexpected error occurred.")
                     }

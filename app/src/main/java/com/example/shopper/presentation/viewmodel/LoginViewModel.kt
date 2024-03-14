@@ -8,8 +8,6 @@ import com.example.shopper.data.util.Outcome
 import com.example.shopper.data.util.SharedPreference
 import com.example.shopper.domain.usecase.AuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

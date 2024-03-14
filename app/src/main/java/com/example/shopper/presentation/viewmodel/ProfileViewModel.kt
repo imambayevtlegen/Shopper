@@ -14,9 +14,9 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val sharedPreference: SharedPreference
-): ViewModel() {
+) : ViewModel() {
 
-    val user : MutableLiveData<Outcome<User>> = MutableLiveData()
+    val user: MutableLiveData<Outcome<User>> = MutableLiveData()
 
     fun getUser(id: Int) = viewModelScope.launch(IO) {
         user.postValue(Outcome.Loading())
