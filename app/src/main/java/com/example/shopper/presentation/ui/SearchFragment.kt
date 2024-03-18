@@ -93,9 +93,11 @@ class SearchFragment : Fragment() {
 
         searchRecyclerView.adapter = adapter
 
-        adapter.setOnItemClickListener {
-            val action = SearchFragmentDirections.actionSearchFragmentToProductDetailFragment(it)
-            findNavController().navigate(action)
+        adapter.setOnItemClickListener {productsList ->
+            val bundle = Bundle().apply {
+                putSerializable("productsList", productsList)
+            }
+            findNavController().navigate(R.id.productDetailFragment, bundle)
         }
     }
 }

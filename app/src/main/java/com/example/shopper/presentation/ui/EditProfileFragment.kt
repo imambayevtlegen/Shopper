@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.shopper.R
+import com.example.shopper.data.model.Name
 import com.example.shopper.data.model.User
 import com.example.shopper.data.util.Outcome
 import com.example.shopper.databinding.FragmentEditProfileBinding
 import com.example.shopper.presentation.viewmodel.EditProfileViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 class EditProfileFragment : Fragment() {
@@ -24,7 +26,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var binding: FragmentEditProfileBinding
 
     // TODO Lazy
-    private lateinit var user: User
+    private val user: User by lazy { arguments?.getSerializable("user") as User }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +40,6 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentEditProfileBinding.bind(view)
-        user = EditProfileFragmentArgs.fromBundle(requireArguments()).user
 
         // TODO sepater method
         editProfileFirstName.setText(user.name.firstname)

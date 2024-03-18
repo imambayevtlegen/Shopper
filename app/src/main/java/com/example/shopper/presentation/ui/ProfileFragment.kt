@@ -63,10 +63,12 @@ class ProfileFragment : Fragment() {
         }
 
         profileEdit.setOnClickListener {
-            val action = user?.let { user1 ->
-                ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment(user1)
+            user?.let { user1 ->
+                val bundle = Bundle().apply {
+                    putSerializable("user1", user)
+                }
+                findNavController().navigate(R.id.editProfileFragment, bundle)
             }
-            if (action != null) findNavController().navigate(action)
         }
 
         profileNotifications.setOnClickListener {

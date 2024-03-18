@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -49,7 +48,6 @@ android {
 }
 
 dependencies {
-    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -59,6 +57,7 @@ dependencies {
 
     //Splash Api
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.test:monitor:1.6.1")
 
 
 //    Navigation component
@@ -91,13 +90,14 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
 
 
-    val dagger_version = "2.50"
+    val dagger_version = "2.51"
     implementation("com.google.dagger:hilt-android:$dagger_version")
     kapt("com.google.dagger:hilt-compiler:$dagger_version")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 
 
     // GMS - Google Mobile Services
-    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 
     // Permissions
     implementation("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
@@ -114,5 +114,10 @@ dependencies {
     val glider_version = "4.16.0"
     implementation("com.github.bumptech.glide:glide:$glider_version")
     kapt("com.github.bumptech.glide:compiler:$glider_version")
+
+
+    testImplementation ("junit:junit:4.13.2")
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
 
 }

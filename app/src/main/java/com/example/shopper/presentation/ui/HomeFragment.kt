@@ -74,26 +74,28 @@ class HomeFragment: Fragment() {
 
         viewModel.getAllProducts()
 
-        viewModel.products.observe(viewLifecycleOwner){response ->
-            when(response){
+        viewModel.products.observe(viewLifecycleOwner){result ->
+            when(result){
                 // TODO different livedata
                 // TODO use kotlin result
                 is Outcome.Success -> {
-                    adapter.submitList(response.data)
-                    Log.i("HomeFragment", "${response.data}")
+                    adapter.submitList(result.data)
+                    Log.i("HomeFragment", "${result.data}")
                 }
                 is Outcome.Loading -> {
                     Log.i("HomeFragment", "Loading..")
                 }
                 is Outcome.Error -> {
-                    Log.i("HomeFragment", "${response.message}")
+                    Log.i("HomeFragment", "${result.message}")
                 }
             }
         }
 
-        adapter.setOnItemClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductDetailFragment(it)
-            findNavController().navigate(action)
+        adapter.setOnItemClickListener { homeProfile ->
+            val bundle = Bundle().apply {
+                putSerializable("homeProfile", homeProfile)
+            }
+            findNavController().navigate(R.id.productDetailFragment, bundle)
         }
 
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->

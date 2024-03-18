@@ -23,15 +23,10 @@ class ProductDetailFragment : Fragment() {
     @Inject
     lateinit var viewModel: ProductDetailViewModel
 
-    private lateinit var shopItem: ShopItem
+    private val shopItem: ShopItem by lazy { arguments?.getSerializable("shopItem") as ShopItem }
 
     private var like = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        shopItem = ProductDetailFragmentArgs.fromBundle(requireArguments()).shopItem
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

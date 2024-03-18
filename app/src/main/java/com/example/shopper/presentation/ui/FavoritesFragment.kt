@@ -45,10 +45,11 @@ class FavoritesFragment : Fragment() {
         }
         favoritesRecyclerView.adapter = adapter
 
-        adapter.setOnItemClickListener {
-            val action =
-                FavoritesFragmentDirections.actionFavoritesFragmentToProductDetailFragment(it)
-            findNavController().navigate(action)
+        adapter.setOnItemClickListener { productId ->
+            val bundle = Bundle().apply {
+                putSerializable("productId", productId)
+            }
+            findNavController().navigate(R.id.productDetailFragment, bundle)
         }
 
         adapter.setOnItemDeleteListener {
